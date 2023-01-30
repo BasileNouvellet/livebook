@@ -1,17 +1,26 @@
 defmodule LivebookWeb.SessionLive.DiscussionComponent do
   use Phoenix.Component
 
+  import LivebookWeb.LiveHelpers
+
   alias Phoenix.LiveView.JS
   alias LivebookWeb.UserHelpers
 
   def render(assigns) do
     ~H"""
-    <div id={"discussion-#{@cell_view.id}"} class="absolute top-0 -right-12">
-      <div id={"discussion-minimized-#{@cell_view.id}"} class="block absolute top-0 right-0 flex flex-col text-xs">
-        <.avatars cell_view={@cell_view} direction={:vertical} />
+    <div id={"discussion-#{@cell_view.id}"} class="absolute top-0 right-0">
+      <div
+        id={"discussion-minimized-#{@cell_view.id}"}
+        phx-click={js_toggle_maximized(@cell_view.id)}
+        class="block absolute top-2 -right-10 flex items-center"
+      >
+        <.remix_icon icon="chat-4-line" class="py-2 px-3 rounded hover:bg-gray-200 focus:bg-gray-200" />
       </div>
 
-      <div id={"discussion-maximized-#{@cell_view.id}"} class="hidden absolute -top-px -right-[225px] flex flex-col text-xs z-10 mr-4">
+      <div
+        id={"discussion-maximized-#{@cell_view.id}"}
+        class="hidden absolute -top-px -right-72 flex flex-col text-xs z-10 mr-4"
+      >
         <.avatars cell_view={@cell_view} direction={:horizontal} />
         <.comments cell_view={@cell_view} current_user={@current_user} />
         <.new_comment cell_view={@cell_view} current_user={@current_user} />
